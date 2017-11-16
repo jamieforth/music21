@@ -848,6 +848,11 @@ def midiEventsToKey(eventList):
         event = eventList[1]
     post = midiModule.getNumbersAsList(event.data)
 
+    if len(post) == 0:
+        environLocal.warn("Key signature event contains no data, default to C major.")
+        # default to C major
+        post = [0, 0]
+
     # first value is number of sharp, or neg for number of flat
     if post[0] > 12:
         # flip around 256
