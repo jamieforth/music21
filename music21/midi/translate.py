@@ -1409,7 +1409,7 @@ def packetsToMidiTrack(packets, trackId=1, channels=None):
 
 
 def midiTrackToStream(mt, ticksPerQuarter=None, quantizePost=True,
-    inputM21=None, **keywords):
+                      inputM21=None, autoVoicing=True, fillGaps=True, **keywords):
     '''
     Note that quantization takes place in stream.py since it's useful not just for MIDI.
 
@@ -1635,16 +1635,16 @@ def midiTrackToStream(mt, ticksPerQuarter=None, quantizePost=True,
                    processDurations=True, 
                    inPlace=True)
 
-    if voicesRequired:
+    if voicesRequired and autoVoicing:
         pass
         # this procedure will make the appropriate rests
-        s.makeVoices(inPlace=True, fillGaps=True)
+        s.makeVoices(inPlace=True, fillGaps=fillGaps)
     else:
         # always need to fill gaps, as rests are not found in any other way
-        s.makeRests(inPlace=True, fillGaps=True)
+        s.makeRests(inPlace=True, fillGaps=fillGaps)
     return s
 
-    
+
 def _prepareStreamForMidi(s):
     '''
     Given a score, prepare it for midding processing. 
